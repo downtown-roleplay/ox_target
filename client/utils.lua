@@ -18,8 +18,7 @@ function utils.raycastFromCamera(flag)
 
     while true do
         Wait(0)
-        local retval, hit, endCoords, surfaceNormal, materialHash, entityHit = GetShapeTestResultIncludingMaterial(
-        handle)
+        local retval, hit, endCoords, surfaceNormal, materialHash, entityHit = GetShapeTestResultIncludingMaterial(handle)
 
         if retval ~= 1 then
             ---@diagnostic disable-next-line: return-type-mismatch
@@ -29,7 +28,7 @@ function utils.raycastFromCamera(flag)
 end
 
 function utils.getTexture()
-    return lib.requestStreamedTextureDict('shared'), 'emptydot_32'
+    return lib.requestStreamedTextureDict('menu_textures'), 'menu_icon_circle'
 end
 
 -- SetDrawOrigin is limited to 32 calls per frame. Set as 0 to disable.
@@ -43,8 +42,8 @@ local currentZones = {}
 local previousZones = {}
 local drawZones = {}
 local drawN = 0
-local width = 0.02
-local height = width * GetAspectRatio(false)
+-- local width = 0.02
+-- local height = width * GetAspectRatio(false)
 
 if drawZoneSprites == 0 then drawZoneSprites = -1 end
 
@@ -54,12 +53,10 @@ function utils.getNearbyZones(coords)
     if not Zones then return currentZones, false end
 
     local n = 0
-    local nearbyZones = lib.zones.getNearbyZones()
     drawN = 0
     previousZones, currentZones = currentZones, table.wipe(previousZones)
 
-    for i = 1, #nearbyZones do
-        local zone = nearbyZones[i]
+    for _, zone in pairs(Zones) do
         local contains = zone:contains(coords)
 
         if contains then
@@ -112,8 +109,7 @@ function utils.drawZoneSprites(dict, texture)
 
         if zone.drawSprite ~= false then
             SetDrawOrigin(zone.coords.x, zone.coords.y, zone.coords.z)
-            DrawSprite(dict, texture, 0, 0, width, height, 0, spriteColour.r, spriteColour.g, spriteColour.b,
-                spriteColour.a)
+            DrawSprite(dict, texture, 0, 0, 0.01, 0.02, 0, spriteColour.r, spriteColour.g, spriteColour.b, spriteColour.a)
         end
     end
 
@@ -194,14 +190,8 @@ SetTimeout(0, function()
         end)
     end
 
-    if utils.hasExport('ox_core.GetPlayer') then
-        require 'client.framework.ox'
-    elseif utils.hasExport('es_extended.getSharedObject') then
-        require 'client.framework.esx'
-    elseif utils.hasExport('qbx_core.HasGroup') then
-        require 'client.framework.qbx'
-    elseif utils.hasExport('ND_Core.getPlayer') then
-        require 'client.framework.nd'
+    if utils.hasExport('rsg-core.GetCoreObject') then
+        require 'client.framework.rsg'
     end
 end)
 
