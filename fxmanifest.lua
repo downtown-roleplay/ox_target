@@ -33,6 +33,7 @@ files {
     'client/debug.lua',
     'client/compat/qtarget.lua',
     'client/compat/rsg-target.lua',
+    'client/framework/rsg.lua',
 }
 
 provide 'qtarget'
