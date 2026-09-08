@@ -1,11 +1,17 @@
 @font-face {
-  font-family: 'RDR Lino Regular';
-  src: url('font/RDRLino-Regular.ttf') format('truetype');
+  font-family: 'Hapna Slab Serif';
+  src: url('font/HapnaSlabSerif-DemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {
-  --color-default: #cfd2da;
-  --color-hover: white;
+  /* paleta RDR2 do inventário (index.scss: $mainColor/$textColor/$accentColor) */
+  --color-bg: rgba(10, 5, 5, 0.88);
+  --color-default: #f5f0e8;
+  --color-hover: #d42f2f;
+  --color-accent: #a01818;
 }
 
 body {
@@ -66,6 +72,40 @@ p {
   position: absolute;
   top: calc(48.4%);
   left: calc(50% + 18pt);
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+/* mesmo card do .context-menu-list/.tooltip-wrapper do inventário: só aparece com opções dentro,
+   senão sobraria uma moldura vazia flutuando ao lado da mira */
+#options-wrapper:not(:empty) {
+  background-color: var(--color-bg);
+  padding: 3pt 2pt;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+#options-wrapper:not(:empty)::before,
+#options-wrapper:not(:empty)::after {
+  content: '';
+  position: absolute;
+  width: 6pt;
+  height: 6pt;
+  pointer-events: none;
+}
+
+#options-wrapper:not(:empty)::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid var(--color-accent);
+  border-left: 2px solid var(--color-accent);
+}
+
+#options-wrapper:not(:empty)::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid var(--color-accent);
+  border-right: 2px solid var(--color-accent);
 }
 
 .option-container {
@@ -74,40 +114,27 @@ p {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  font-family: "RDR Lino Regular";
-  background-image: url('assets/options.png');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: left center;
-  font-size: 11pt;
-  line-height: 22pt;
+  font-family: 'Hapna Slab Serif', serif;
+  font-size: 9pt;
+  line-height: 16pt;
   vertical-align: middle;
-  margin: 2pt;
-  padding: 4pt 20pt 4pt 8pt;
-  transition: all 300ms ease-in-out;
-  transform-origin: left top;
-  scale: 1;
+  padding: 2pt 12pt 2pt 5pt;
+  transition: color 200ms ease-in-out;
   height: auto;
   width: fit-content;
   max-width: none;
   white-space: nowrap;
-  top: 0;
-  filter: brightness(0.8) contrast(1.0);
 }
 
 .option-container:hover {
-  transform-origin: left top;
   color: var(--color-hover);
-  margin-left: 4pt;
-  filter: brightness(1.1) contrast(1.1);
-  transform: scale(1.02);
 }
 
 .option-icon {
-  font-size: 12pt;
-  line-height: 22pt;
-  width: 14pt;
-  margin: 5pt 5pt 5pt 6pt;
+  font-size: 9pt;
+  line-height: 16pt;
+  width: 10pt;
+  margin: 3pt 4pt 3pt 4pt;
   color: var(--color-default);
 }
 
